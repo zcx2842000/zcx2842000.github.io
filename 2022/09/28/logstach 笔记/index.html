@@ -4,8 +4,12 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="欢迎来到我的博客, Hexo">
-    <meta name="description" content="">
+    <meta name="keywords" content="Logstach笔记, Hexo">
+    <meta name="description" content="1、安装logstash 版本必须和es 一致
+2、创建sql文件，里面是sql语句
+
+2、配置config&amp;#x2F;logstash.conf
+1234567891011121314151617181920212223242526272">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +21,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>欢迎来到我的博客 | Hexo</title>
+    <title>Logstach笔记 | Hexo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -334,12 +338,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">欢迎来到我的博客</h1>
+                    <h1 class="description center-align post-title">Logstach笔记</h1>
                 </div>
             </div>
         </div>
@@ -396,7 +400,18 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>1、安装logstash 版本必须和es 一致</p>
+<p>2、创建sql文件，里面是sql语句</p>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210202133900362.png" alt="image-20210202133900362"></p>
+<p>2、配置config&#x2F;logstash.conf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    stdin &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    #sys_myposts</span><br><span class="line">    jdbc &#123;</span><br><span class="line">      # mysql jdbc connection 连接地址</span><br><span class="line">      jdbc_connection_string =&gt; &quot;jdbc:mysql://ip:3306/数据库名字?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;serverTimezone=CTT&quot;</span><br><span class="line">      # 登录数据库的用户名、密码</span><br><span class="line">      jdbc_user =&gt; &quot;账户&quot;</span><br><span class="line">      jdbc_password =&gt; &quot;密码&quot;</span><br><span class="line">      # jdbc 驱动包路径（我们在步骤4处理的内容）  版本</span><br><span class="line">      jdbc_driver_library =&gt; &quot;mysql\mysql-connector-java-8.0.11.jar&quot;   </span><br><span class="line">      # 连接驱动类名</span><br><span class="line">      jdbc_driver_class =&gt; &quot;com.mysql.cj.jdbc.Driver&quot;</span><br><span class="line">      jdbc_paging_enabled =&gt; &quot;true&quot;</span><br><span class="line">      jdbc_page_size =&gt; &quot;50000&quot;</span><br><span class="line">      #取得sql的路径  默认当前</span><br><span class="line">      statement_filepath =&gt; &quot;mysql\java_selection\us_kw_competing_words.sql&quot;</span><br><span class="line">      # 以下表示定时执行任务，使用cron表达式，本文只全量同步一次，所以不配置定时器，如果要实现增量更新，需要配合定时器以及上次查询的最后一个值，具体要根据你的业务来定。</span><br><span class="line">      #schedule =&gt; &quot;* * * * *&quot;</span><br><span class="line">      #每两秒同步一次</span><br><span class="line">      #schedule =&gt; &quot;*/2 * * * *&quot; </span><br><span class="line">     </span><br><span class="line">      type =&gt; &quot;jdbc&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">filter &#123;</span><br><span class="line">    json &#123;</span><br><span class="line">        source =&gt; &quot;message&quot;</span><br><span class="line">        remove_field =&gt; [&quot;message&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">    #es 的ip</span><br><span class="line">        hosts =&gt; [&quot;127.0.0.1:9200&quot;] </span><br><span class="line">        # es 索引 自己创的</span><br><span class="line">        index =&gt; &quot;index&quot;</span><br><span class="line">        document_id =&gt; &quot;%&#123;id&#125;&quot;</span><br><span class="line">        document_type =&gt; &quot;_doc&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec =&gt; json_lines</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动 mysql同步到es</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">然后我们在logstash的bin目录启动cmd窗口，输入以下命令执行导入数据（-f 表示需要使用自定义的配置文件，后面带自定义配置文件路径）：</span><br><span class="line">logstash.bat -f ../config/logstash.conf</span><br><span class="line">logstash.bat -f ../config/uk_kw_competing_words.conf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">#logstash 跨服同步写法</span><br><span class="line">input &#123;</span><br><span class="line">	jdbc &#123;</span><br><span class="line">      jdbc_connection_string =&gt; &quot;jdbc:mysql://localhost/test?useUnicode=true&amp;characterEncoding=utf8&quot;</span><br><span class="line">      jdbc_user =&gt; &quot;root&quot;</span><br><span class="line">      jdbc_password =&gt; &quot;123456&quot;</span><br><span class="line">      jdbc_driver_library =&gt; &quot;E:\mysql-connector-java-5.1.48.jar&quot;</span><br><span class="line">      jdbc_driver_class =&gt; &quot;com.mysql.jdbc.Driver&quot;</span><br><span class="line">      jdbc_paging_enabled =&gt; &quot;true&quot;</span><br><span class="line">      jdbc_page_size =&gt; &quot;50000&quot;</span><br><span class="line">     </span><br><span class="line">      statement =&gt; &quot;select *,date_add(update_time,interval 8 hour) update_time_add from user where update_time &gt; (select date_add(:sql_last_value, interval 8 hour) update_time)&quot;</span><br><span class="line">      tracking_column_type =&gt; &quot;timestamp&quot;</span><br><span class="line">      schedule =&gt; &quot;* * * * *&quot;</span><br><span class="line">	  type =&gt; &quot;user&quot;</span><br><span class="line">    &#125;	</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">	jdbc &#123;</span><br><span class="line">		connection_string =&gt; &quot;jdbc:mysql://localhost/testcong?useUnicode=true&amp;characterEncoding=utf8&quot;</span><br><span class="line">		username =&gt; &quot;root&quot;</span><br><span class="line">		password =&gt; &quot;123456&quot;</span><br><span class="line">		driver_class =&gt; &quot;com.mysql.jdbc.Driver&quot;</span><br><span class="line">		statement =&gt; [&quot;insert into user(id,username,password,update_time)</span><br><span class="line">		values(?,?,?,?) </span><br><span class="line">			on duplicate key update </span><br><span class="line">			id = values(id),</span><br><span class="line">			username = values(username),</span><br><span class="line">			password = values(password),</span><br><span class="line">			update_time = values(update_time)&quot;,</span><br><span class="line">			&quot;id&quot;,&quot;username&quot;,&quot;password&quot;,&quot;update_time_add&quot;]</span><br><span class="line">	&#125;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec =&gt; json_lines</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
                 
             </div>
             <hr/>
@@ -422,7 +437,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2022/09/28/%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2/">http://example.com/2022/09/28/%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2/</a>
+                    <a href="http://example.com/2022/09/28/logstach%20%E7%AC%94%E8%AE%B0/">http://example.com/2022/09/28/logstach%20%E7%AC%94%E8%AE%B0/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -540,13 +555,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2022/09/28/vue%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE/">
+                <a href="/2022/09/28/mysql%E9%85%8D%E7%BD%AE%E5%A4%87%E4%BB%BD/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="vue创建项目">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Enysql配置配分">
                         
-                        <span class="card-title">vue创建项目</span>
+                        <span class="card-title">Enysql配置配分</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -577,13 +592,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/09/28/vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                <a href="/2022/09/28/php-zf3/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="VUE学习笔记">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="php-zf3">
                         
-                        <span class="card-title">VUE学习笔记</span>
+                        <span class="card-title">php-zf3</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
